@@ -1,0 +1,153 @@
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id                    String        @id @default(cuid())
+  email                 String        @unique
+  username              String        @unique
+  passwordHash          String
+  role                  String        @default("USER") // USER | ADMIN
+  balance               Float         @default(0.0)
+  apiKey                String?       @unique
+  isBanned              Boolean       @default(false)
+  customDiscountPercent Float         @default(0.0)
+  createdAt             DateTime      @default(now())
+  updatedAt             DateTime      @updatedAt
+  orders                Order[]
+  transactions          Transaction[]
+  tickets               Ticket[]
+  messages              TicketMessage[]
+}
+
+model Provider {
+  id          String    @id @default(cuid())
+  name        String
+  apiUrl      String
+  apiKey      String
+  balance     Float     @default(0.0)
+  currency    String    @default("INR") // INR | USD
+  status      String    @default("ACTIVE") // ACTIVE | DISABLED
+  isDefault   Boolean   @default(false)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  services    Service[]
+}
+
+model Category {
+  id        String    @id @default(cuid())
+  name      String
+  platform  String    @default("INSTAGRAM") // INSTAGRAM | YOUTUBE | TELEGRAM | FACEBOOK | TIKTOK | TWITTER | SPOTIFY | WEBSITE | OTHER
+  icon      String?
+  sortOrder Int       @default(0)
+  status    String    @default("ACTIVE") // ACTIVE | HIDDEN
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  services  Service[]
+}
+
+model Service {
+  id                 String    @id @default(cuid())
+  name               String
+  categoryId         String
+  category           Category  @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  providerId         String?
+  provider           Provider? @relation(fields: [providerId], references: [id], onDelete: SetNull)
+  providerServiceId  String?
+  type               String    @default("DEFAULT") // DEFAULT | CUSTOM_COMMENTS | PACKAGE
+  wholesaleRate      Float     @default(0.0) // Per 1000
+  sellRate           Float     @default(0.0) // Per 1000
+  minQuantity        Int       @default(10)
+  maxQuantity        Int       @default(100000)
+  speedBadge         String    @default("⚡ Instant (0-5 min)")
+  guaranteeBadge     String    @default("🛡️ 30-Day Refill")
+  qualityRating      Int       @default(98) // e.g. 98%
+  description        String?
+  dripfeedSupported  Boolean   @default(false)
+  cancelSupported    Boolean   @default(true)
+  refillSupported    Boolean   @default(true)
+  status             String    @default("ACTIVE") // ACTIVE | DISABLED
+  sortOrder          Int       @default(0)
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @updatedAt
+  orders             Order[]
+}
+
+model Order {
+  id              String    @id @default(cuid())
+  userId          String
+  user            User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  serviceId       String
+  service         Service   @relation(fields: [serviceId], references: [id], onDelete: Cascade)
+  link            String
+  quantity        Int
+  charge          Float
+  wholesaleCost   Float     @default(0.0)
+  profit          Float     @default(0.0)
+  startCount      Int       @default(0)
+  remains         Int       @default(0)
+  status          String    @default("PENDING") // PENDING | PROCESSING | IN_PROGRESS | COMPLETED | PARTIAL | CANCELED | REFUNDED
+  providerOrderId String?
+  runs            Int       @default(1)
+  interval        Int       @default(0)
+  refillStatus    String?   // NONE | REQUESTED | REFILLED | REJECTED
+  comments        String?
+  errorReason     String?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+}
+
+model Transaction {
+  id           String    @id @default(cuid())
+  userId       String
+  user         User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  type         String    // DEPOSIT | ORDER_DEBIT | REFUND_CREDIT | ADMIN_ADJUSTMENT
+  amount       Float
+  fee          Float     @default(0.0)
+  balanceAfter Float
+  method       String    @default("UPI_QR") // UPI_QR | PAYTM | CRYPTO_USDT | MANUAL_BANK | ADMIN_GIFT
+  status       String    @default("APPROVED") // PENDING | APPROVED | REJECTED | FAILED
+  utrNumber    String?
+  proofImage   String?
+  notes        String?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+}
+
+model Ticket {
+  id        String          @id @default(cuid())
+  userId    String
+  user      User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  subject   String
+  category  String          @default("ORDER") // ORDER | PAYMENT | SERVICE | API | OTHER
+  orderId   String?
+  status    String          @default("OPEN") // OPEN | ANSWERED | USER_REPLIED | CLOSED
+  priority  String          @default("NORMAL") // NORMAL | HIGH | URGENT
+  createdAt DateTime        @default(now())
+  updatedAt DateTime        @updatedAt
+  messages  TicketMessage[]
+}
+
+model TicketMessage {
+  id         String   @id @default(cuid())
+  ticketId   String
+  ticket     Ticket   @relation(fields: [ticketId], references: [id], onDelete: Cascade)
+  senderId   String
+  senderUser User     @relation(fields: [senderId], references: [id], onDelete: Cascade)
+  senderRole String   @default("USER") // USER | ADMIN
+  message    String
+  createdAt  DateTime @default(now())
+}
+
+model SystemSetting {
+  id          String   @id @default(cuid())
+  key         String   @unique
+  value       String
+  description String?
+  updatedAt   DateTime @updatedAt
+}
