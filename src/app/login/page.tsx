@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { ShieldCheck, UserCheck, Lock, Mail, ArrowRight, Sparkles } from "lucide-react";
+import { Lock, Mail, ArrowRight } from "lucide-react";
 import BrandLogo from "@/components/BrandLogo";
 
 export default function LoginPage() {
@@ -27,10 +27,12 @@ export default function LoginPage() {
 
       const data = await res.json();
       if (!res.ok) {
-        throw new Error(data.error || "Login failed");
+        throw new Error(data.error || "Invalid username or password");
       }
 
-      if (data.user.role === "ADMIN") {
+      const isPublic = typeof window !== "undefined" && window.location.hostname.includes("mediareachdigital.com");
+
+      if (data.user.role === "ADMIN" && !isPublic) {
         router.push("/admin/dashboard");
       } else {
         router.push("/new-order");
@@ -40,16 +42,6 @@ export default function LoginPage() {
       setError(err.message);
     } finally {
       setLoading(false);
-    }
-  };
-
-  const fillQuickDemo = (role: "ADMIN" | "USER") => {
-    if (role === "ADMIN") {
-      setIdentifier("mediareachsmm@gmail.com");
-      setPassword("admin12345password");
-    } else {
-      setIdentifier("demo@smmpanel.com");
-      setPassword("demo12345password");
     }
   };
 
@@ -65,32 +57,6 @@ export default function LoginPage() {
           <p className="text-sm text-slate-400 mt-1">
             India's #1 Automated Digital Growth & Reach Platform
           </p>
-        </div>
-
-        {/* Quick Demo Fill Buttons (For instant testing) */}
-        <div className="glass-card p-3 rounded-2xl mb-5 border-indigo-500/30 bg-indigo-950/20">
-          <div className="text-[11px] font-bold uppercase tracking-wider text-indigo-300 mb-2 flex items-center gap-1.5">
-            <Sparkles className="w-3.5 h-3.5 text-indigo-400" />
-            <span>1-Click Test Credentials</span>
-          </div>
-          <div className="grid grid-cols-2 gap-2">
-            <button
-              type="button"
-              onClick={() => fillQuickDemo("ADMIN")}
-              className="flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/30 text-amber-300 text-xs font-semibold transition-all"
-            >
-              <ShieldCheck className="w-3.5 h-3.5" />
-              <span>Admin Account</span>
-            </button>
-            <button
-              type="button"
-              onClick={() => fillQuickDemo("USER")}
-              className="flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl bg-indigo-500/10 hover:bg-indigo-500/20 border border-indigo-500/30 text-indigo-300 text-xs font-semibold transition-all"
-            >
-              <UserCheck className="w-3.5 h-3.5" />
-              <span>Demo Customer</span>
-            </button>
-          </div>
         </div>
 
         {/* Login Form */}
@@ -113,7 +79,7 @@ export default function LoginPage() {
                   required
                   value={identifier}
                   onChange={(e) => setIdentifier(e.target.value)}
-                  placeholder="mediareachsmm@gmail.com"
+                  placeholder="name@example.com"
                   className="w-full glass-input pl-10 pr-4 py-2.5 rounded-xl text-sm"
                 />
               </div>
