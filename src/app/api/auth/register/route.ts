@@ -45,36 +45,25 @@ export async function POST(req: Request) {
         username: username.trim(),
         passwordHash,
         role: "USER",
-        balance: 100.0, // Welcome ₹100 credit for testing!
+        balance: 0.0, // Standard 0.0 balance (No bonus)
         apiKey,
       },
     });
 
-    // Record welcome bonus transaction
-    await prisma.transaction.create({
-      data: {
-        userId: user.id,
-        type: "DEPOSIT",
-        amount: 100.0,
-        balanceAfter: 100.0,
-        method: "ADMIN_GIFT",
-        status: "APPROVED",
-        notes: "🎉 Welcome signup gift credit",
-      },
-    });
-
+    // Create session token
     const token = signToken({
       id: user.id,
       email: user.email,
       username: user.username,
-      role: "USER",
+      role: user.role as "USER" | "ADMIN",
     });
 
-    cookies().set("smm_session", token, {
+    const cookieStore = cookies();
+    cookieStore.set("smm_session", token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: "lax",
-      maxAge: 60 * 60 * 24 * 7,
+      maxAge: 7 * 24 * 60 * 60,
       path: "/",
     });
 
@@ -91,7 +80,7 @@ export async function POST(req: Request) {
   } catch (error: any) {
     console.error("Register Error:", error);
     return NextResponse.json(
-      { error: "Internal server error during registration" },
+      { error: "Internal server error occurred" },
       { status: 500 }
     );
   }

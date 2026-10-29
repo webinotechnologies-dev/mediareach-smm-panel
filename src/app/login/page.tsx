@@ -150,7 +150,7 @@ export default function LoginPage() {
           <div className="mt-6 pt-5 border-t border-white/10 text-center text-xs text-slate-400">
             Don't have an account?{" "}
             <Link href="/register" className="text-indigo-400 hover:text-indigo-300 font-bold">
-              Sign Up (Get ₹100 Bonus)
+              Sign Up
             </Link>
           </div>
         </div>

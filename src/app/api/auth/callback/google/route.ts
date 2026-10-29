@@ -85,29 +85,15 @@ export async function GET(request: NextRequest) {
       const randomPassword = Math.random().toString(36).slice(-12) + "A1!";
       const passwordHash = hashPassword(randomPassword);
 
-      // Create new user with ₹100 Welcome Bonus
+      // Create new user with ₹0.0 balance (No bonus)
       user = await prisma.user.create({
         data: {
           email,
           username,
           passwordHash,
           role: "USER",
-          balance: 100.0,
+          balance: 0.0,
           apiKey: "smm_usr_" + Math.random().toString(36).substring(2, 15),
-        },
-      });
-
-      // Welcome bonus transaction record
-      await prisma.transaction.create({
-        data: {
-          userId: user.id,
-          type: "DEPOSIT",
-          amount: 100.0,
-          fee: 0.0,
-          balanceAfter: 100.0,
-          method: "SIGNUP_BONUS",
-          status: "APPROVED",
-          notes: "Free ₹100 Welcome Bonus (1-Click Google Sign-In)",
         },
       });
     }

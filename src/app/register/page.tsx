@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { User, Lock, Mail, ArrowRight, Gift } from "lucide-react";
+import { User, Lock, Mail, ArrowRight } from "lucide-react";
 import BrandLogo from "@/components/BrandLogo";
 
 export default function RegisterPage() {
@@ -54,19 +54,6 @@ export default function RegisterPage() {
           </p>
         </div>
 
-        {/* Bonus Badge */}
-        <div className="glass-card p-3 rounded-2xl mb-5 border-emerald-500/30 bg-emerald-950/30 flex items-center gap-3">
-          <div className="w-9 h-9 rounded-xl bg-emerald-500/20 flex items-center justify-center border border-emerald-500/30 shrink-0">
-            <Gift className="w-5 h-5 text-emerald-400" />
-          </div>
-          <div>
-            <span className="text-xs font-bold text-emerald-300">Free Signup Bonus</span>
-            <p className="text-[11px] text-slate-300">
-              Get ₹100 instant balance in your wallet to test any service!
-            </p>
-          </div>
-        </div>
-
         {/* Register Form */}
         <div className="glass-panel p-6 sm:p-8 rounded-3xl shadow-2xl">
           {error && (
@@ -98,7 +85,7 @@ export default function RegisterPage() {
                 d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"
               />
             </svg>
-            <span>Sign Up with Google (Get ₹100 Bonus)</span>
+            <span>Sign Up with Google</span>
           </a>
 
           {/* Divider */}
@@ -165,7 +152,7 @@ export default function RegisterPage() {
               disabled={loading}
               className="w-full glow-btn text-white py-3 rounded-xl font-bold text-sm flex items-center justify-center gap-2 mt-2 disabled:opacity-50"
             >
-              <span>{loading ? "Creating Account..." : "Create Account & Claim ₹100"}</span>
+              <span>{loading ? "Creating Account..." : "Create Account"}</span>
               <ArrowRight className="w-4 h-4" />
             </button>
           </form>
