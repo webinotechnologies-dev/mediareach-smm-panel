@@ -37,7 +37,13 @@ async function main() {
   });
   console.log("✅ Demo customer seeded:", demoUser.email);
 
-  // 2. Seed Providers
+  // 2. Seed Providers (idempotent check)
+  const existingProviderCount = await prisma.provider.count();
+  if (existingProviderCount > 0) {
+    console.log("ℹ️ Providers & services already exist in cloud database. Skipping duplicate seed.");
+    return;
+  }
+
   const mockProvider = await prisma.provider.create({
     data: {
       name: "Mock Sandbox Engine (100% Free Sandbox Test)",
