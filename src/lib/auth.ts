@@ -41,7 +41,7 @@ export function verifyToken(token: string): SessionUser | null {
   }
 }
 
-export async function getCurrentUser(): Promise<(SessionUser & { balance: number; isBanned: boolean; apiKey?: string | null }) | null> {
+export async function getCurrentUser(): Promise<(SessionUser & { balance: number; isBanned: boolean; apiKey?: string | null; customDiscountPercent: number }) | null> {
   const cookieStore = cookies();
   const token = cookieStore.get("smm_session")?.value;
   if (!token) return null;
@@ -60,6 +60,7 @@ export async function getCurrentUser(): Promise<(SessionUser & { balance: number
         balance: true,
         isBanned: true,
         apiKey: true,
+        customDiscountPercent: true,
       },
     });
 
@@ -73,6 +74,7 @@ export async function getCurrentUser(): Promise<(SessionUser & { balance: number
       balance: user.balance,
       isBanned: user.isBanned,
       apiKey: user.apiKey,
+      customDiscountPercent: user.customDiscountPercent || 0,
     };
   } catch (error) {
     console.error("Error fetching current user:", error);

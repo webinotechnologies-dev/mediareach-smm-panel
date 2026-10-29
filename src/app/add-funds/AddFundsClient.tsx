@@ -40,7 +40,7 @@ export default function AddFundsClient({
   initialTransactions: Transaction[];
 }) {
   const router = useRouter();
-  const [method, setMethod] = useState<"UPI_QR" | "MANUAL_BANK">("UPI_QR");
+  const [method, setMethod] = useState<"UPI_QR" | "CRYPTO_USDT" | "MANUAL_BANK">("UPI_QR");
   const [amount, setAmount] = useState<string>("500");
   const [utrNumber, setUtrNumber] = useState<string>("");
   const [copied, setCopied] = useState(false);
@@ -50,6 +50,7 @@ export default function AddFundsClient({
 
   const realUpiId = "shubhambhati3187@upi";
   const brandPayeeName = "MediaReach";
+  const demoCryptoAddress = "TYs98bK7VbMediaReachTRC20UsdtOfficialDepositWalletAddress";
 
   const handleCopy = (text: string) => {
     navigator.clipboard.writeText(text);
