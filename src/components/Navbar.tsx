@@ -10,11 +10,9 @@ import {
   RefreshCw, 
   Zap, 
   User as UserIcon,
-  Shield,
   HelpCircle,
   Bell
 } from "lucide-react";
-import RoleToggle from "./RoleToggle";
 import BrandLogo from "./BrandLogo";
 import { formatINR } from "@/lib/utils";
 
@@ -82,7 +80,7 @@ export default function Navbar({ initialUser }: { initialUser?: UserProfile | nu
       <div className="flex h-16 items-center justify-between px-4 sm:px-8 max-w-7xl mx-auto">
         {/* Brand Logo */}
         <div className="flex items-center gap-6">
-          <Link href={user?.role === "ADMIN" ? "/admin/dashboard" : "/new-order"} className="flex items-center gap-3 group">
+          <Link href="/new-order" className="flex items-center gap-3 group">
             <BrandLogo size="md" className="group-hover:scale-105 transition-transform duration-200" />
             <div>
               <div className="flex items-center gap-1.5">
@@ -93,13 +91,6 @@ export default function Navbar({ initialUser }: { initialUser?: UserProfile | nu
               <p className="text-[10px] text-slate-400 -mt-1 font-medium hidden sm:block">India's #1 Social Growth Engine</p>
             </div>
           </Link>
-
-          {/* Admin Role Switcher */}
-          {user?.role === "ADMIN" && (
-            <div className="hidden md:block">
-              <RoleToggle currentRole={user.role} />
-            </div>
-          )}
         </div>
 
         {/* Right Action Hub */}
@@ -108,55 +99,47 @@ export default function Navbar({ initialUser }: { initialUser?: UserProfile | nu
           <button
             onClick={handleManualSync}
             disabled={syncing}
-            title="Sync live order statuses from upstream providers"
-            className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-slate-300 hover:text-white bg-slate-900/80 hover:bg-slate-800 border border-white/10 rounded-lg transition-all"
+            title="Sync Orders with IndianSmartPanel"
+            className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-medium text-slate-300 hover:text-white bg-slate-900 border border-white/10 hover:border-indigo-500/30 transition-all"
           >
-            <RefreshCw className={`w-3.5 h-3.5 text-cyan-400 ${syncing ? "animate-spin" : ""}`} />
-            <span className="hidden sm:inline">{syncing ? "Syncing..." : "Sync Status"}</span>
+            <RefreshCw className={`w-3.5 h-3.5 text-indigo-400 ${syncing ? "animate-spin" : ""}`} />
+            <span>{syncing ? "Syncing..." : "Sync Status"}</span>
           </button>
 
           {syncMessage && (
-            <span className="text-xs text-emerald-400 bg-emerald-950/60 border border-emerald-500/30 px-2 py-1 rounded-md animate-pulse">
+            <span className="text-xs text-emerald-400 font-semibold animate-pulse hidden md:inline">
               {syncMessage}
             </span>
           )}
 
           {user ? (
             <>
-              {/* Wallet Balance Badge */}
-              <div className="flex items-center gap-2 bg-gradient-to-r from-slate-900 to-slate-950 border border-emerald-500/30 px-3.5 py-1.5 rounded-xl shadow-inner shadow-emerald-500/5">
-                <div className="w-6 h-6 rounded-lg bg-emerald-500/10 flex items-center justify-center border border-emerald-500/20">
-                  <Wallet className="w-3.5 h-3.5 text-emerald-400" />
+              {/* Wallet Balance Pill */}
+              <div className="flex items-center bg-slate-900/90 border border-emerald-500/30 rounded-2xl p-1 pr-3 shadow-lg shadow-emerald-500/5">
+                <div className="w-8 h-8 rounded-xl bg-emerald-500/10 flex items-center justify-center text-emerald-400 mr-2 border border-emerald-500/20">
+                  <Wallet className="w-4 h-4" />
                 </div>
                 <div className="flex flex-col">
-                  <span className="text-[10px] text-slate-400 font-medium -mb-1">Wallet</span>
-                  <span className="text-sm font-bold text-emerald-400 font-mono">
-                    {formatINR(user.balance)}
-                  </span>
+                  <span className="text-[9px] uppercase tracking-wider font-semibold text-slate-400">Balance</span>
+                  <span className="text-xs font-bold text-emerald-400">{formatINR(user.balance)}</span>
                 </div>
+                <Link
+                  href="/add-funds"
+                  className="ml-3 p-1 text-slate-400 hover:text-emerald-400 hover:bg-emerald-500/10 rounded-lg transition-colors"
+                  title="Add Funds via 0% Fee Instant UPI"
+                >
+                  <PlusCircle className="w-4 h-4" />
+                </Link>
               </div>
 
-              {/* Add Funds Button */}
-              <Link
-                href="/add-funds"
-                className="flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-semibold rounded-xl text-white bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 shadow-md shadow-emerald-500/20 transition-all hover:scale-[1.02]"
-              >
-                <PlusCircle className="w-4 h-4" />
-                <span className="hidden sm:inline">Add Funds</span>
-              </Link>
-
-              {/* User Dropdown / Logout */}
+              {/* User Profile Pill */}
               <div className="flex items-center gap-2 pl-2 border-l border-white/10">
-                <div className="flex items-center gap-2 px-2 py-1 rounded-lg bg-slate-900/60 border border-white/5 text-xs text-slate-300">
-                  <div className="w-6 h-6 rounded-full bg-indigo-500/20 text-indigo-400 flex items-center justify-center font-bold text-xs uppercase">
-                    {user.username.charAt(0)}
-                  </div>
-                  <span className="hidden lg:inline font-medium">{user.username}</span>
-                  {user.role === "ADMIN" && (
-                    <span className="text-[9px] px-1 py-0.2 rounded bg-amber-500/20 text-amber-300 font-bold border border-amber-500/30">
-                      ADMIN
-                    </span>
-                  )}
+                <div className="w-8 h-8 rounded-xl bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center text-indigo-300 text-xs font-bold">
+                  {user.username.slice(0, 2).toUpperCase()}
+                </div>
+                <div className="hidden lg:flex flex-col">
+                  <span className="text-xs font-semibold text-slate-200">{user.username}</span>
+                  <span className="text-[10px] text-slate-400">{user.email}</span>
                 </div>
 
                 <button
