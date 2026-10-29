@@ -9,10 +9,10 @@ async function main() {
   // 1. Seed Admin User & Demo User
   const adminPassword = await bcrypt.hash("admin12345password", 10);
   const admin = await prisma.user.upsert({
-    where: { email: "admin@smmpanel.com" },
+    where: { email: "mediareachsmm@gmail.com" },
     update: {},
     create: {
-      email: "admin@smmpanel.com",
+      email: "mediareachsmm@gmail.com",
       username: "superadmin",
       passwordHash: adminPassword,
       role: "ADMIN",
@@ -50,14 +50,26 @@ async function main() {
     },
   });
 
+  const indianSmartProvider = await prisma.provider.create({
+    data: {
+      name: "IndianSmartPanel (Production Live)",
+      apiUrl: "https://indiansmartpanel.com/api/v2",
+      apiKey: "pwn91ghifeacreaukihjrq7f5574p8tw4qllc1iu",
+      balance: 0.0,
+      currency: "USD",
+      status: "ACTIVE",
+      isDefault: true,
+    },
+  });
+
   const peakerrProvider = await prisma.provider.create({
     data: {
-      name: "Peakerr Wholesale API (Production Ready)",
+      name: "Peakerr Wholesale API (Production Live)",
       apiUrl: "https://peakerr.com/api/v2",
-      apiKey: "YOUR_PEAKERR_API_KEY_HERE",
+      apiKey: "e9e1cd7846befb996e25b4303e22b251",
       balance: 0.0,
-      currency: "INR",
-      status: "DISABLED", // Can be enabled by admin after putting real key
+      currency: "USD",
+      status: "ACTIVE",
       isDefault: false,
     },
   });

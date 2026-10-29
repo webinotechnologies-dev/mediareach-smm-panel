@@ -64,7 +64,7 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ## 🔑 Default Credentials (Pre-seeded)
 
-- **Admin Account**: `admin@smmpanel.com` / `admin12345password` (Pre-loaded with ₹10,000 balance)
+- **Admin Account**: `mediareachsmm@gmail.com` / `admin12345password` (Pre-loaded with ₹10,000 balance)
 - **Demo Customer**: `demo@smmpanel.com` / `demo12345password` (Pre-loaded with ₹500 balance)
 
 ---

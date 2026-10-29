@@ -43,9 +43,9 @@ export default function LoginPage() {
     }
   };
 
-  const fillQuickDemo = (type: "ADMIN" | "USER") => {
-    if (type === "ADMIN") {
-      setIdentifier("admin@smmpanel.com");
+  const fillQuickDemo = (role: "ADMIN" | "USER") => {
+    if (role === "ADMIN") {
+      setIdentifier("mediareachsmm@gmail.com");
       setPassword("admin12345password");
     } else {
       setIdentifier("demo@smmpanel.com");
@@ -113,16 +113,24 @@ export default function LoginPage() {
                   required
                   value={identifier}
                   onChange={(e) => setIdentifier(e.target.value)}
-                  placeholder="admin@smmpanel.com"
+                  placeholder="mediareachsmm@gmail.com"
                   className="w-full glass-input pl-10 pr-4 py-2.5 rounded-xl text-sm"
                 />
               </div>
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">
-                Password
-              </label>
+              <div className="flex items-center justify-between mb-2">
+                <label className="text-xs font-semibold text-slate-300 uppercase tracking-wider">
+                  Password
+                </label>
+                <Link
+                  href="/forgot-password"
+                  className="text-xs text-indigo-400 hover:text-indigo-300 hover:underline transition-colors"
+                >
+                  Forgot password?
+                </Link>
+              </div>
               <div className="relative">
                 <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
                 <input
@@ -152,6 +160,25 @@ export default function LoginPage() {
               Sign Up (Get ₹100 Bonus)
             </Link>
           </div>
+        </div>
+
+        {/* Cashfree Legal Compliance Footer Links */}
+        <div className="mt-6 flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-[11px] text-slate-500 text-center">
+          <Link href="/terms" className="hover:text-slate-300 transition-colors">
+            Terms of Service
+          </Link>
+          <span>•</span>
+          <Link href="/privacy" className="hover:text-slate-300 transition-colors">
+            Privacy Policy
+          </Link>
+          <span>•</span>
+          <Link href="/refund-policy" className="hover:text-slate-300 transition-colors">
+            Refund & Cancellation
+          </Link>
+          <span>•</span>
+          <Link href="/contact" className="hover:text-slate-300 transition-colors">
+            Contact Us
+          </Link>
         </div>
       </div>
     </div>

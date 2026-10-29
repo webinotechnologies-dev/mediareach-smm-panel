@@ -15,6 +15,8 @@ export async function POST(req: Request) {
     if (!provider) return NextResponse.json({ error: "Provider not found" }, { status: 404 });
 
     const marginMultiplier = 1 + (parseFloat(marginPercent) || 40) / 100;
+    // If provider is in USD, convert to INR wholesale rate (1 USD ~= ₹88.50)
+    const fxRate = (provider.currency || "").toUpperCase() === "USD" ? 88.50 : 1.0;
 
     const services = await SmmEngine.sendRequest(provider.apiUrl, provider.apiKey, {
       action: "services",
@@ -31,7 +33,8 @@ export async function POST(req: Request) {
 
     for (const item of services) {
       const categoryName = item.category || "General Services";
-      const wholesaleRate = parseFloat(item.rate) || 10.0;
+      const wholesaleRateRaw = parseFloat(item.rate) || 0.1;
+      const wholesaleRate = wholesaleRateRaw * fxRate;
       const sellRate = wholesaleRate * marginMultiplier;
 
       // Find or create category
