@@ -1,8 +1,9 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { ShieldCheck, UserCheck, ArrowRightLeft } from "lucide-react";
+import { ShieldCheck, UserCheck } from "lucide-react";
 
 interface RoleToggleProps {
   currentRole: "USER" | "ADMIN";
@@ -10,7 +11,15 @@ interface RoleToggleProps {
 
 export default function RoleToggle({ currentRole }: RoleToggleProps) {
   const pathname = usePathname();
-  if (currentRole !== "ADMIN") return null;
+  const [isPublicDomain, setIsPublicDomain] = useState(false);
+
+  useEffect(() => {
+    if (typeof window !== "undefined" && window.location.hostname.includes("mediareachdigital.com")) {
+      setIsPublicDomain(true);
+    }
+  }, []);
+
+  if (currentRole !== "ADMIN" || isPublicDomain) return null;
 
   const isAdminView = pathname.startsWith("/admin");
 
