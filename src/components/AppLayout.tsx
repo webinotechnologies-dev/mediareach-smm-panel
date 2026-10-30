@@ -3,9 +3,15 @@ import Sidebar from "./Sidebar";
 import { getCurrentUser } from "@/lib/auth";
 import { redirect } from "next/navigation";
 
-export default async function AppLayout({ children }: { children: React.ReactNode }) {
+export default async function AppLayout({
+  children,
+  requireAuth = true,
+}: {
+  children: React.ReactNode;
+  requireAuth?: boolean;
+}) {
   const user = await getCurrentUser();
-  if (!user) {
+  if (!user && requireAuth) {
     redirect("/login");
   }
 

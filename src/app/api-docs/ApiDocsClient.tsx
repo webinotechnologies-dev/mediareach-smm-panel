@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import {
   Code2,
   Key,
@@ -11,14 +12,23 @@ import {
   Zap,
   Globe,
   RefreshCw,
-  FileCode
+  FileCode,
+  LogIn
 } from "lucide-react";
 
-export default function ApiDocsClient({ apiKey }: { apiKey: string }) {
+interface ApiDocsClientProps {
+  apiKey: string;
+  isLoggedIn?: boolean;
+}
+
+export default function ApiDocsClient({ apiKey, isLoggedIn = true }: ApiDocsClientProps) {
   const [copiedKey, setCopiedKey] = useState(false);
   const [selectedLang, setSelectedLang] = useState<"curl" | "node" | "python" | "php">("curl");
 
+  const effectiveKey = apiKey || "YOUR_API_KEY_HERE";
+
   const handleCopyKey = () => {
+    if (!apiKey) return;
     navigator.clipboard.writeText(apiKey);
     setCopiedKey(true);
     setTimeout(() => setCopiedKey(false), 2000);
@@ -26,27 +36,27 @@ export default function ApiDocsClient({ apiKey }: { apiKey: string }) {
 
   const codeSnippets = {
     curl: `# 1. Place a New Order
-curl -X POST "http://localhost:3000/api/v2" \\
+curl -X POST "https://mediareachdigital.com/api/v2" \\
   -H "Content-Type: application/x-www-form-urlencoded" \\
-  -d "key=${apiKey}" \\
+  -d "key=${effectiveKey}" \\
   -d "action=add" \\
   -d "service=SERVICE_ID" \\
   -d "link=https://instagram.com/p/yourlink" \\
   -d "quantity=1000"
 
 # 2. Check Order Status
-curl -X POST "http://localhost:3000/api/v2" \\
-  -d "key=${apiKey}&action=status&order=ORDER_ID"
+curl -X POST "https://mediareachdigital.com/api/v2" \\
+  -d "key=${effectiveKey}&action=status&order=ORDER_ID"
 
 # 3. Check Account Balance
-curl -X POST "http://localhost:3000/api/v2" \\
-  -d "key=${apiKey}&action=balance"`,
+curl -X POST "https://mediareachdigital.com/api/v2" \\
+  -d "key=${effectiveKey}&action=balance"`,
 
     node: `const axios = require('axios');
 const qs = require('qs');
 
-const API_URL = 'http://localhost:3000/api/v2';
-const API_KEY = '${apiKey}';
+const API_URL = 'https://mediareachdigital.com/api/v2';
+const API_KEY = '${effectiveKey}';
 
 // Place Order
 async function createOrder() {
@@ -64,8 +74,8 @@ createOrder();`,
 
     python: `import requests
 
-API_URL = "http://localhost:3000/api/v2"
-API_KEY = "${apiKey}"
+API_URL = "https://mediareachdigital.com/api/v2"
+API_KEY = "${effectiveKey}"
 
 payload = {
     "key": API_KEY,
@@ -79,9 +89,9 @@ response = requests.post(API_URL, data=payload)
 print("Order Response:", response.json())`,
 
     php: `<?php
-$apiUrl = 'http://localhost:3000/api/v2';
+$apiUrl = 'https://mediareachdigital.com/api/v2';
 $data = [
-    'key'      => '${apiKey}',
+    'key'      => '${effectiveKey}',
     'action'   => 'add',
     'service'  => 'SERVICE_ID',
     'link'     => 'https://instagram.com/p/yourlink',
@@ -121,25 +131,37 @@ print_r($response);
             <Key className="w-4 h-4 text-indigo-400" />
             <span>Your Personal Reseller API Key</span>
           </div>
-          <span className="text-[10px] text-emerald-400 font-bold bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20">
-            Active & Verified
-          </span>
+          {isLoggedIn ? (
+            <span className="text-[10px] text-emerald-400 font-bold bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20">
+              Active & Verified
+            </span>
+          ) : (
+            <Link
+              href="/login"
+              className="text-[10px] text-indigo-300 hover:text-white font-bold bg-indigo-500/20 px-2.5 py-1 rounded-lg border border-indigo-500/30 flex items-center gap-1 transition-colors"
+            >
+              <LogIn className="w-3 h-3" />
+              <span>Log in to reveal key</span>
+            </Link>
+          )}
         </div>
 
         <div className="flex items-center gap-3">
           <input
             type="text"
             readOnly
-            value={apiKey}
+            value={apiKey || "Please sign in to view your unique API key"}
             className="w-full glass-input px-4 py-2.5 rounded-xl font-mono text-sm text-indigo-200 select-all"
           />
-          <button
-            onClick={handleCopyKey}
-            className="flex items-center gap-1.5 px-4 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs shadow-lg shadow-indigo-600/30 transition-all shrink-0"
-          >
-            {copiedKey ? <Check className="w-4 h-4 text-white" /> : <Copy className="w-4 h-4" />}
-            <span>{copiedKey ? "Copied!" : "Copy Key"}</span>
-          </button>
+          {isLoggedIn && apiKey && (
+            <button
+              onClick={handleCopyKey}
+              className="flex items-center gap-1.5 px-4 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs shadow-lg shadow-indigo-600/30 transition-all shrink-0"
+            >
+              {copiedKey ? <Check className="w-4 h-4 text-white" /> : <Copy className="w-4 h-4" />}
+              <span>{copiedKey ? "Copied!" : "Copy Key"}</span>
+            </button>
+          )}
         </div>
       </div>
 
@@ -151,7 +173,7 @@ print_r($response);
         </div>
         <div className="p-4 rounded-2xl bg-slate-900/60 border border-white/5 space-y-1">
           <span className="text-[10px] uppercase font-bold text-slate-400">Endpoint URL</span>
-          <p className="text-sm font-bold text-white font-mono truncate">/api/v2</p>
+          <p className="text-sm font-bold text-white font-mono truncate">https://mediareachdigital.com/api/v2</p>
         </div>
         <div className="p-4 rounded-2xl bg-slate-900/60 border border-white/5 space-y-1">
           <span className="text-[10px] uppercase font-bold text-slate-400">Response Format</span>

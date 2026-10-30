@@ -17,7 +17,7 @@ export default async function ServicesPage() {
   });
 
   return (
-    <AppLayout>
+    <AppLayout requireAuth={false}>
       <ServicesClient initialCategories={categories} />
     </AppLayout>
   );
