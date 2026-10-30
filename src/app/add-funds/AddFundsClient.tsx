@@ -239,9 +239,21 @@ export default function AddFundsClient({
         const rzp = new (window as any).Razorpay(options);
         rzp.open();
       } else {
-        // Direct Mobile UPI Intent Trigger
-        if (data.upiIntentUrl) {
+        // Direct UPI Intent Trigger (Mobile vs Desktop Safe)
+        const isMobile =
+          typeof navigator !== "undefined" &&
+          /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+            navigator.userAgent
+          );
+
+        if (isMobile && data.upiIntentUrl) {
           window.location.href = data.upiIntentUrl;
+        } else {
+          // Desktop Fallback: Switch to Dynamic QR so user can scan with mobile
+          setMethod("UPI_QR");
+          setSuccess(
+            "Desktop detected! Please scan the generated Dynamic QR code below using your mobile UPI App (GPay, PhonePe, Paytm)."
+          );
         }
       }
     } catch (err: any) {

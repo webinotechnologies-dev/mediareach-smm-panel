@@ -2,7 +2,7 @@ import AppLayout from "@/components/AppLayout";
 import { prisma } from "@/lib/prisma";
 import ServicesClient from "./ServicesClient";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 60;
 
 export default async function ServicesPage() {
   const categories = await prisma.category.findMany({

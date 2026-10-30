@@ -1,6 +1,7 @@
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import { cookies } from "next/headers";
+import { cache } from "react";
 import { prisma } from "./prisma";
 
 const JWT_SECRET = process.env.JWT_SECRET || "smm-panel-ultra-secure-jwt-secret-key-2026-bhati";
@@ -41,7 +42,7 @@ export function verifyToken(token: string): SessionUser | null {
   }
 }
 
-export async function getCurrentUser(): Promise<(SessionUser & { balance: number; isBanned: boolean; apiKey?: string | null; customDiscountPercent: number }) | null> {
+export const getCurrentUser = cache(async (): Promise<(SessionUser & { balance: number; isBanned: boolean; apiKey?: string | null; customDiscountPercent: number }) | null> => {
   const cookieStore = cookies();
   const token = cookieStore.get("smm_session")?.value;
   if (!token) return null;
@@ -80,4 +81,4 @@ export async function getCurrentUser(): Promise<(SessionUser & { balance: number
     console.error("Error fetching current user:", error);
     return null;
   }
-}
+});
