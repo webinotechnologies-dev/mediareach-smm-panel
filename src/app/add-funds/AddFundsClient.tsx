@@ -64,6 +64,7 @@ export default function AddFundsClient({
   const [success, setSuccess] = useState<string | null>(null);
   const [transactions, setTransactions] = useState<Transaction[]>(initialTransactions);
   const [currentBalance, setCurrentBalance] = useState<number>(user?.balance || 0);
+  const [isMobileDevice, setIsMobileDevice] = useState(false);
 
   const realUpiId = upiId || "shubhambhati3187@upi";
   const brandPayeeName = siteName || "MediaReach";
@@ -157,6 +158,13 @@ export default function AddFundsClient({
         .finally(() => setLoading(false));
     }
   }, [router]);
+
+  // Detect mobile device on mount
+  useEffect(() => {
+    setIsMobileDevice(
+      /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
+    );
+  }, []);
 
   // 2. Handle 1-Click Direct Gateway Checkout
   const handle1ClickCheckout = async (e: React.FormEvent) => {
@@ -511,16 +519,18 @@ export default function AddFundsClient({
                         </button>
                       </div>
 
-                      {/* Direct UPI App Intent Trigger for Mobile Users */}
-                      <div className="pt-1">
-                        <a
-                          href={upiIntent}
-                          className="inline-flex items-center gap-1.5 text-xs text-emerald-400 hover:text-emerald-300 underline underline-offset-2 font-medium"
-                        >
-                          <span>Open in PhonePe / GPay / Paytm directly</span>
-                          <ExternalLink className="w-3 h-3" />
-                        </a>
-                      </div>
+                      {/* Direct UPI App Intent Trigger for Mobile Users Only */}
+                      {isMobileDevice && (
+                        <div className="pt-1">
+                          <a
+                            href={upiIntent}
+                            className="inline-flex items-center gap-1.5 text-xs text-emerald-400 hover:text-emerald-300 underline underline-offset-2 font-medium"
+                          >
+                            <span>Open in PhonePe / GPay / Paytm directly</span>
+                            <ExternalLink className="w-3 h-3" />
+                          </a>
+                        </div>
+                      )}
                     </div>
                   </div>
                 </div>
