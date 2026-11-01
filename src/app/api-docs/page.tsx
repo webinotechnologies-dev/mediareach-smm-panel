@@ -6,21 +6,21 @@ import ApiDocsClient from "./ApiDocsClient";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "Reseller API Documentation - SMM Panel API v2 Integration",
+  title: "Partner & Developer API Documentation - Digital Reach Engine API v2",
   description:
-    "Full REST API documentation for MediaReach SMM panel resellers. Standard SMM panel API v2 compatible. Integrate Instagram, YouTube, Telegram services via API. Get your API key instantly.",
+    "Full REST API documentation for MediaReach Digital partners and agency developers. Standard REST API v2 compatible. Programmatically automate and scale digital reach campaigns.",
   keywords: [
-    "smm panel api",
-    "reseller api india",
-    "smm api v2",
-    "social media api integration",
-    "mediareach api",
-    "smm reseller panel api",
+    "digital reach api",
+    "social growth developer api",
+    "partner api integration",
+    "marketing agency api v2",
+    "mediareach digital api",
+    "automated reach api",
   ],
   openGraph: {
-    title: "Reseller API Documentation | MediaReach SMM Panel API v2",
+    title: "Partner & Developer API Documentation | MediaReach Digital API v2",
     description:
-      "Full API documentation for MediaReach reseller panel. Integrate SMM services via REST API. Standard SMM panel API v2 compatible.",
+      "Full API documentation for MediaReach Digital partners. Integrate digital reach and growth services via REST API. Fast, secure, and automated.",
     url: "https://mediareachdigital.com/api-docs",
     type: "website",
   },

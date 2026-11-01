@@ -21,7 +21,7 @@ export default function WhatsAppWidget() {
 
   const cleanNumber = phoneNumber.replace(/[^0-9]/g, "");
   const defaultText = encodeURIComponent(
-    "Hello MediaReach Support! I need help with SMM services / wallet deposit."
+    "Hello MediaReach Support! I need assistance with digital reach services / wallet deposit."
   );
   const waUrl = `https://wa.me/${cleanNumber}?text=${defaultText}`;
 
@@ -43,7 +43,7 @@ export default function WhatsAppWidget() {
             </button>
           </div>
           <p className="text-xs text-slate-300 leading-relaxed mb-3">
-            Have questions about orders or adding funds? Chat with us directly on WhatsApp!
+            Have questions about campaigns or adding funds? Chat with us directly on WhatsApp!
           </p>
           <a
             href={waUrl}
@@ -71,4 +71,3 @@ export default function WhatsAppWidget() {
     </div>
   );
 }
-

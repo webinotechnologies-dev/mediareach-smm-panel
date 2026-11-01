@@ -6,23 +6,23 @@ import ServicesClient from "./ServicesClient";
 export const revalidate = 60;
 
 export const metadata: Metadata = {
-  title: "SMM Services & Pricing - India's Cheapest Instagram, YouTube, Telegram Panel",
+  title: "Digital Reach Services & Pricing - Instagram, YouTube, Telegram Growth",
   description:
-    "Browse 70+ affordable SMM services: Instagram followers, YouTube views, Telegram members, Facebook likes, Twitter followers. Wholesale rates from ₹8/1000. Instant delivery 24/7.",
+    "Explore 70+ automated social growth and digital reach solutions: Instagram followers, YouTube views, Telegram community growth, Facebook engagement. Fast delivery & wholesale agency rates.",
   keywords: [
-    "buy instagram followers india cheap",
-    "youtube views india",
-    "telegram members buy",
-    "facebook likes cheap india",
-    "smm panel services india",
-    "instagram followers price",
-    "social media growth services",
-    "cheap smm services india",
+    "digital reach services india",
+    "instagram growth agency",
+    "youtube reach expansion india",
+    "telegram channel marketing",
+    "facebook engagement agency",
+    "wholesale digital growth rates",
+    "social media expansion agency",
+    "mediareach services pricing",
   ],
   openGraph: {
-    title: "SMM Services & Pricing | MediaReach - India's Cheapest SMM Panel",
+    title: "Digital Reach Services & Pricing | MediaReach Digital",
     description:
-      "Browse 70+ affordable SMM services. Wholesale rates from ₹8/1000. Instagram, YouTube, Telegram, Facebook services with instant delivery.",
+      "Explore 70+ automated social growth solutions. Wholesale agency rates from ₹8/1000. Instagram, YouTube, Telegram, Facebook reach with instant automated delivery.",
     url: "https://mediareachdigital.com/services",
     type: "website",
   },

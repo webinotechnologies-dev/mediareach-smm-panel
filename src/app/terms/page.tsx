@@ -3,8 +3,8 @@ import BrandLogo from "@/components/BrandLogo";
 import { ArrowLeft, Shield } from "lucide-react";
 
 export const metadata = {
-  title: "Terms and Conditions | MediaReach",
-  description: "Terms and Conditions of service for MediaReach SMM panel.",
+  title: "Terms and Conditions | MediaReach Digital",
+  description: "Terms and Conditions of service for MediaReach Digital Agency.",
 };
 
 export default function TermsPage() {
@@ -77,4 +77,3 @@ export default function TermsPage() {
     </div>
   );
 }
-

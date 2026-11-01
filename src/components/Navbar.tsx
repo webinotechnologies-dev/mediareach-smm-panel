@@ -99,7 +99,7 @@ export default function Navbar({ initialUser }: { initialUser?: UserProfile | nu
           <button
             onClick={handleManualSync}
             disabled={syncing}
-            title="Sync Orders with IndianSmartPanel"
+            title="Sync Orders Status"
             className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-medium text-slate-300 hover:text-white bg-slate-900 border border-white/10 hover:border-indigo-500/30 transition-all"
           >
             <RefreshCw className={`w-3.5 h-3.5 text-indigo-400 ${syncing ? "animate-spin" : ""}`} />

@@ -116,11 +116,11 @@ print_r($response);
         <div className="flex items-center gap-2">
           <Code2 className="w-5 h-5 text-indigo-400" />
           <h1 className="text-2xl font-black text-white tracking-tight">
-            Reseller API v2 Documentation
+            Partner API v2 Documentation
           </h1>
         </div>
         <p className="text-xs text-slate-400 mt-1">
-          Connect your custom panel or automated bot directly using industry standard SMM API v2 protocol
+          Connect your custom platform, marketing agency CRM, or automated workflow directly using standard API v2 protocol
         </p>
       </div>
 

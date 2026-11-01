@@ -2,13 +2,13 @@ import type { Metadata } from "next";
 import RegisterClient from "./RegisterClient";
 
 export const metadata: Metadata = {
-  title: "Register - Create Free SMM Panel Account",
+  title: "Register - Create Free MediaReach Digital Account",
   description:
-    "Create your free MediaReach SMM panel account. Get instant access to 70+ social media growth services. Buy Instagram followers, YouTube views, Telegram members at India's lowest prices.",
+    "Create your free MediaReach Digital account. Instant access to 70+ social media reach and growth services at enterprise wholesale rates.",
   openGraph: {
-    title: "Register | MediaReach SMM Panel - Free Account",
+    title: "Register | MediaReach Digital - Free Account",
     description:
-      "Create a free account on India's cheapest SMM panel. Instant access to Instagram, YouTube, Telegram services.",
+      "Create a free account on MediaReach Digital. Instant access to automated Instagram, YouTube, Telegram growth solutions.",
     url: "https://mediareachdigital.com/register",
     type: "website",
   },
